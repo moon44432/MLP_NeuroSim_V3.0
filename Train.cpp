@@ -565,24 +565,24 @@ int train_batchsize = param -> numTrainImagesPerBatch;
                             /*can support multiple optimization algorithm*/
                             gradt = s1[jj] * Input[i][k];
                             gradSum1[jj][k] += gradt; // sum over the gradient over all the training samples in this batch
-                            if (optimization_type == "SGD"){
+                            if (std::string(optimization_type) == "SGD"){
                                 deltaWeight1[jj][k] = SGD(gradt, param->alpha1);                        
                             }   
                             else if((batchSize+1) % train_batchsize == 0){ // batch based algorithms
                                 // get the batch gradient
                                 gradSum1[jj][k] /= train_batchsize;
-                                if (optimization_type=="Momentum")
+                                if (std::string(optimization_type)=="Momentum")
                                 {
                                     gradSum1[jj][k] *= train_batchsize;
                                     deltaWeight1[jj][k] = Momentum(gradSum1[jj][k], param->alpha1,momentumPrev1[jj][k]);
                                     momentumPrev1[jj][k] = GAMA*momentumPrev1[jj][k]+(1-GAMA)*gradSum1[jj][k];
                                 }
-                                else if(optimization_type=="RMSprop")
+                                else if(std::string(optimization_type)=="RMSprop")
                                 {
                                     deltaWeight1[jj][k] = RMSprop(gradSum1[jj][k], param->alpha1, gradSquarePrev1[jj][k]);                                
                                     gradSquarePrev1[jj][k] = GAMA*gradSquarePrev1[jj][k]+(1-GAMA)*pow(gradSum1[jj][k], 2);   
                                 }
-                                else if(optimization_type == "Adam")
+                                else if(std::string(optimization_type) == "Adam")
                                 {
                                     deltaWeight1[jj][k] = Adam(gradSum1[jj][k], param->alpha1, momentumPrev1[jj][k], gradSquarePrev1[jj][k],(batchSize+1)/train_batchsize);
                                     momentumPrev1[jj][k] = BETA1*momentumPrev1[jj][k]+(1-BETA1)*gradSum1[jj][k];
@@ -612,7 +612,7 @@ int train_batchsize = param -> numTrainImagesPerBatch;
                                 maxWeightUpdated =fabs(actualWeightUpdated);
                             }
                             
-                            if(optimization_type == "SGD" || (batchSize+1) % train_batchsize == 0 ){
+                            if(std::string(optimization_type) == "SGD" || (batchSize+1) % train_batchsize == 0 ){
                                 if (AnalogNVM *temp = dynamic_cast<AnalogNVM*>(arrayIH->cell[jj][k])) {	// Analog eNVM
                                     arrayIH->WriteCell(jj, k, deltaWeight1[jj][k], weight1[jj][k], param->maxWeight, param->minWeight, true);
                                     weight1[jj][k] = arrayIH->ConductanceToWeight(jj, k, param->maxWeight, param->minWeight); 
@@ -908,22 +908,22 @@ int train_batchsize = param -> numTrainImagesPerBatch;
 							// deltaWeight2[jj][k] = -param->alpha2 * s2[jj] * a1[k];
                             gradt = s2[jj] * a1[k];
                             gradSum2[jj][k] += gradt; // sum over the gradient over all the training samples in this batch
-                         if (optimization_type == "SGD") 
+                         if (std::string(optimization_type) == "SGD") 
                             deltaWeight2[jj][k] = SGD(gradt, param->alpha2); 
                          else if((batchSize+1) % train_batchsize == 0){
                             gradSum2[jj][k] /= train_batchsize;
-                            if(optimization_type=="Momentum")
+                            if(std::string(optimization_type)=="Momentum")
                             {
                                 gradSum2[jj][k] *= train_batchsize;
                                 deltaWeight2[jj][k] = Momentum(gradSum2[jj][k], param->alpha2,momentumPrev2[jj][k]);
                                 momentumPrev2[jj][k] = GAMA*momentumPrev2[jj][k]+(1-GAMA)*gradSum2[jj][k];
                             }
-                            else if(optimization_type=="RMSprop")
+                            else if(std::string(optimization_type)=="RMSprop")
                             {
                                 deltaWeight2[jj][k] = RMSprop(gradSum2[jj][k], param->alpha2, gradSquarePrev2[jj][k]);
                                 gradSquarePrev2[jj][k] = GAMA*gradSquarePrev2[jj][k]+(1-GAMA)*pow(gradSum2[jj][k], 2);
                             }
-                            else if(optimization_type == "Adam")
+                            else if(std::string(optimization_type) == "Adam")
                             {
                                 deltaWeight2[jj][k] = Adam(gradSum2[jj][k], param->alpha2, momentumPrev2[jj][k], gradSquarePrev2[jj][k],(batchSize+1)/train_batchsize);
                                 momentumPrev2[jj][k] = BETA1*momentumPrev2[jj][k]+(1-BETA1)*gradSum2[jj][k];
@@ -952,7 +952,7 @@ int train_batchsize = param -> numTrainImagesPerBatch;
                             {
                                 maxWeightUpdated =fabs(actualWeightUpdated);
                             }		
-                        if(optimization_type == "SGD" || (batchSize+1) % train_batchsize == 0){
+                        if(std::string(optimization_type) == "SGD" || (batchSize+1) % train_batchsize == 0){
 							if (AnalogNVM *temp = dynamic_cast<AnalogNVM*>(arrayHO->cell[jj][k])) { // Analog eNVM
                                 arrayHO->WriteCell(jj, k, deltaWeight2[jj][k], weight2[jj][k], param->maxWeight, param->minWeight, true);
 							    weight2[jj][k] = arrayHO->ConductanceToWeight(jj, k, param->maxWeight, param->minWeight);

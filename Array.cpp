@@ -81,7 +81,7 @@ double Array::ReadCell(int x, int y, char* mode) {
 		return cellCurrent;
 	} 
     else if (HybridCell *temp = dynamic_cast<HybridCell*>(**cell)){
-        if(mode=="LSB"){
+        if(std::string(mode)=="LSB"){
             extern std::mt19937 gen;
             double readVoltage_LSB =  static_cast<HybridCell*>(cell[x][y])->LSBcell.readVoltage;
             double totalWireResistance_LSB = (x + 1) * wireResistanceRow + (arrayRowSize - y) * wireResistanceCol;
@@ -92,7 +92,7 @@ double Array::ReadCell(int x, int y, char* mode) {
                 cellCurrent_LSB = readVoltage_LSB / (1/static_cast<HybridCell*>(cell[x][y])->LSBcell.conductance + totalWireResistance_LSB);      
             return cellCurrent_LSB;
         }
-        else if(mode=="MSB_LTP"){
+        else if(std::string(mode)=="MSB_LTP"){
             extern std::mt19937 gen;
             double readVoltage_MSB = static_cast<HybridCell*>(cell[x][y])->MSBcell_LTP.readVoltage;
             double totalWireResistance_MSB=  (x + 1) * wireResistanceRow + (arrayRowSize - y) * wireResistanceCol +static_cast<HybridCell*>(cell[x][y])->MSBcell_LTP.resistanceAccess;
@@ -103,7 +103,7 @@ double Array::ReadCell(int x, int y, char* mode) {
                 cellCurrent_MSB_LTP = readVoltage_MSB / (1/static_cast<HybridCell*>(cell[x][y])->MSBcell_LTP.conductance +  totalWireResistance_MSB);
            return cellCurrent_MSB_LTP;
         }
-        else if(mode=="MSB_LTD"){
+        else if(std::string(mode)=="MSB_LTD"){
             extern std::mt19937 gen;
             double readVoltage_MSB = static_cast<HybridCell*>(cell[x][y])->MSBcell_LTD.readVoltage;  
             double totalWireResistance_MSB=  (x + 1) * wireResistanceRow + (arrayRowSize - y) * wireResistanceCol +(static_cast<HybridCell*>(cell[x][y])->MSBcell_LTP).resistanceAccess;
@@ -248,9 +248,9 @@ double Array::GetMaxCellReadCurrent(int x, int y, char* mode) {
     if(AnalogNVM*temp = dynamic_cast<AnalogNVM*>(**cell)) 
 	    return static_cast<AnalogNVM*>(cell[x][y])->GetMaxReadCurrent();
     else if (HybridCell* temp = dynamic_cast<HybridCell*>(**cell)){   
-        if(mode=="LSB")
+        if(std::string(mode)=="LSB")
             return static_cast<HybridCell*>(cell[x][y])->LSBcell.GetMaxReadCurrent();
-        else if(mode =="MSB")
+        else if(std::string(mode) =="MSB")
             return static_cast<HybridCell*>(cell[x][y])->MSBcell_LTP.GetMaxReadCurrent();
         else 
             printf("Please specify the correct reading mode\n");            
@@ -262,9 +262,9 @@ double Array::GetMinCellReadCurrent(int x, int y, char*mode) {
     if(AnalogNVM*temp = dynamic_cast<AnalogNVM*>(**cell)) 
 	    return static_cast<AnalogNVM*>(cell[x][y])->GetMinReadCurrent();
     else if (HybridCell* temp = dynamic_cast<HybridCell*>(**cell)){   
-        if(mode=="LSB")
+        if(std::string(mode)=="LSB")
             return static_cast<HybridCell*>(cell[x][y])->LSBcell.GetMinReadCurrent();
-        else if(mode =="MSB")
+        else if(std::string(mode) =="MSB")
             return static_cast<HybridCell*>(cell[x][y])->MSBcell_LTP.GetMinReadCurrent();
         else 
             printf("Please specify the correct reading mode\n");            
@@ -307,7 +307,7 @@ double Array::ConductanceToWeight(int x, int y, double maxWeight, double minWeig
 		else if (I>Imax)
 			I = Imax;
 		double weightLSB= (I-Imin) / (Imax-Imin) * (maxWeight-minWeight) + minWeight; 
-        if(mode == "LSB")
+        if(std::string(mode) == "LSB")
             return weightLSB;
         else{
             double I_LTP = this->ReadCell(x,y,"MSB_LTP");
@@ -332,11 +332,11 @@ double Array::ConductanceToWeight(int x, int y, double maxWeight, double minWeig
                 weight = maxWeight;
             else if (weight < minWeight)
                 weight = minWeight;
-            if(mode=="MSB")
+            if(std::string(mode)=="MSB")
                 return weightMSB;
-            else if(mode=="MSB_LTP")
+            else if(std::string(mode)=="MSB_LTP")
                 return weightMSB_LTP;
-            else if(mode=="MSB_LTD")
+            else if(std::string(mode)=="MSB_LTD")
                 return weightMSB_LTD;
             else // return the weight of the cell is not specified;
                 return weight;
