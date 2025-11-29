@@ -55,13 +55,13 @@ public:
 	int totalNumEpochs;	// Total number of epochs
 	int interNumEpochs;	// Internal number of epochs (print out the results every interNumEpochs)
 	int nInput;     // # of neurons in input layer
-	int nHide;      // # of neurons in hidden layer
+	// int nHide;      // # of neurons in hidden layer
 	int nOutput;	// # of neurons in output layer
 	double alpha1;		// Learning rate for the synapses from input to hidden layer
-	double alpha2;		// Learning rate for the synapses from hidden to output layer
+	// double alpha2;		// Learning rate for the synapses from hidden to output layer
 	double maxWeight;	// Upper bound of weight value
 	double minWeight;	// Lower bound of weight value
-    char* optimization_type;
+    std::string optimization_type;
 
 	/* Hardware parameters */
 	bool useHardwareInTrainingFF;   // Use hardware in the feed forward part of training or not (true: realistic hardware, false: ideal software)

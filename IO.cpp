@@ -146,7 +146,7 @@ void PrintWeightToFile(const char *str) {
 	sprintf(printWeight1FileName, "%s1.csv", str);
 	FILE *fp_dw1 = fopen(printWeight1FileName, "w");
 	fprintf(fp_dw1, "minWeight=%f, maxWeight=%f\n", param->minWeight, param->maxWeight);
-	for (int j = 0; j < param->nHide; j++){
+	for (int j = 0; j < param->nOutput; j++){
 		for (int k = 0; k < param->nInput; k++){
       // for (int m=0;m<param->numWeightBit;m++){
 			    fprintf(fp_dw1, "%f,", weight1[j][k]);
@@ -157,6 +157,7 @@ void PrintWeightToFile(const char *str) {
 	}
 	fclose(fp_dw1);
 	/* Print weight2 */
+	/*
 	char printWeight2FileName[50];
 	sprintf(printWeight2FileName, "%s2.csv", str);
 	FILE *fp_dw2 = fopen(printWeight2FileName, "w");
@@ -171,5 +172,6 @@ void PrintWeightToFile(const char *str) {
 		fprintf(fp_dw2, "\n");
 	}
 	fclose(fp_dw2);
+	*/
 }
 

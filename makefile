@@ -58,7 +58,7 @@ depend: .depend
 .depend: $(ALLSRC)
 	@$(RM) .depend
 	@g++ -MM $(CXXFLAGS) $^ > .depend;
-# include .depend
+include .depend
 
 clean:
 	$(RM) $(MAINS:.cpp=)
